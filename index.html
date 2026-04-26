@@ -47,13 +47,13 @@
         .bg-yellow { background-color: #fde68a; } 
         .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列：黑色塊與 Warn1 */
+        /* 第一列：高度固定 60px 並畫出底線 */
         .row-1 {
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             height: 60px;
-            border-bottom: 2px solid #a3a3a3; /* 第一條灰線 */
+            border-bottom: 2px solid #a3a3a3; /* 關鍵灰線 1 */
             box-sizing: border-box;
         }
 
@@ -63,10 +63,8 @@
             font-size: 32px;
             font-weight: 900;
             padding: 0 15px;
-            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            height: 100%;
         }
 
         .warn-1 {
@@ -78,7 +76,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%;
         }
 
         .content-body {
@@ -88,14 +85,13 @@
             padding: 0; 
         }
 
-        /* 第二列 */
         .row-2 {
             text-align: center;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 2px solid #a3a3a3; /* 第二條灰線 */
+            border-bottom: 2px solid #a3a3a3; /* 關鍵灰線 2 */
             padding: 10px 15px;
         }
 
@@ -106,7 +102,6 @@
             letter-spacing: -1px;
         }
 
-        /* 第三列 */
         .row-3 {
             text-align: center;
             padding: 10px 15px;
@@ -131,13 +126,14 @@
             margin-left: 5px; 
         }
 
+        /* ★ 核心修正：側邊紅框高度必須與 row-1 加上 border 的高度總和一致 ★ */
         .warn-2 {
             background-color: #c92a2a;
             color: white;
             font-size: 32px;
             font-weight: bold;
             width: 60px;
-            height: 60px;
+            height: 60px; /* 這裡維持 60px，對應 row-1 的 height */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -158,14 +154,11 @@
             white-space: nowrap;
             display: flex;
             align-items: center;
-            /* ★ 修正：移除 border-top，改用高度對齊 ★ */
-            border-top: none; 
-            box-sizing: border-box;
-            /* 透過與 row-1 相同的 border-bottom 高度來達成視覺平行 */
-            margin-top: 2px; 
+            /* ★ 確保灰色區塊「踩在」灰線延長線上 ★ */
+            margin-top: 0px; 
         }
 
-        /* 控制介面樣式 */
+        /* 控制介面 */
         .control-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
         .input-group { display: flex; flex-direction: column; margin-bottom: 15px; }
         .input-group label { font-weight: bold; margin-bottom: 5px; }
@@ -177,7 +170,6 @@
 <body>
 
     <div class="preview-section">
-        <div class="section-title">✨ 藥品標籤即時預覽 ✨</div>
         <div id="label-canvas">
             <div class="main-content bg-yellow" id="main-content-box">
                 <div class="row-1">
