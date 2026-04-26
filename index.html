@@ -51,7 +51,7 @@
             box-sizing: border-box;
             display: flex;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            padding: 5px; 
+            padding: 5px; /* 最外框留白寬度：5px */
         }
 
         /* 左側主資訊區 */
@@ -59,7 +59,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 10px 15px 0 15px; /* 微調主區塊 padding */
+            padding: 10px 15px 0 15px; 
             transition: background-color 0.3s; 
         }
 
@@ -68,13 +68,13 @@
         .bg-yellow { background-color: #fde68a; } 
         .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列：代碼與標注1 (已修正貼齊底線) */
+        /* 第一列：代碼與標注1 */
         .row-1 {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end; /* 讓內容靠底對齊 */
+            align-items: flex-end; 
             border-bottom: 2px solid #a3a3a3;
-            padding-bottom: 0px; /* 底部留白歸零，完美貼齊灰線 */
+            padding-bottom: 0px; 
             margin-bottom: 5px;
         }
 
@@ -137,7 +137,7 @@
             width: 60px;
             display: flex;
             flex-direction: column;
-            margin-left: 10px;
+            margin-left: 5px; /* ★ 已將這裡的留白從 10px 改為 5px，與最外框一致 ★ */
         }
 
         .warn-2 {
