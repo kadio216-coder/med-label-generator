@@ -23,7 +23,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 40px; /* 與下方輸入區的間距 */
+            margin-bottom: 40px;
         }
 
         .control-section {
@@ -43,15 +43,14 @@
             text-align: center;
         }
 
-        /* --- 標籤預覽區樣式 (精準還原圖片) --- */
+        /* --- 標籤預覽區樣式 --- */
         #label-canvas {
-            /* 模擬標籤實際比例，加入白色背景 */
             width: 600px;
             height: 320px;
             background-color: white;
             box-sizing: border-box;
             display: flex;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* 網頁預覽時的陰影，轉PDF時不會有影響 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
         .main-content {
@@ -95,7 +94,7 @@
         }
 
         .trade-name {
-            font-size: 84px; /* 稍微縮小以適應較長藥名 */
+            font-size: 84px;
             font-weight: 900;
             line-height: 1;
             letter-spacing: -1px;
@@ -154,8 +153,7 @@
             letter-spacing: 4px;
         }
 
-
-        /* --- 控制面板樣式 (下方區塊) --- */
+        /* --- 控制面板樣式 --- */
         .input-group {
             display: flex;
             flex-direction: column;
@@ -175,7 +173,6 @@
             border-radius: 4px;
         }
 
-        /* 特殊標注使用不同底色區隔 */
         .special-group {
             background-color: #f9f9f9;
             padding: 15px;
@@ -236,34 +233,34 @@
         <div class="section-title">📝 標籤資料輸入</div>
         
         <div class="input-group">
-            <label>1. 藥品代碼 (Code)</label>
+            <label>1. 藥品代碼</label>
             <input type="text" id="in-code" value="GLU020" oninput="updateLabel()">
         </div>
         <div class="input-group">
-            <label>2. 藥品商品名 (英文 Trade Name)</label>
+            <label>2. 藥品商品名 (英文)</label>
             <input type="text" id="in-trade" value="Glucomet" oninput="updateLabel()">
         </div>
         <div class="input-group">
-            <label>3. 藥品商品名 (中文 Chinese Name)</label>
+            <label>3. 藥品商品名 (中文)</label>
             <input type="text" id="in-chinese" value="克糖美錠" oninput="updateLabel()">
         </div>
         <div class="input-group">
-            <label>4. 藥品成分名與劑量 (Generic & Dose)</label>
+            <label>4. 藥品成分名與劑量</label>
             <input type="text" id="in-generic" value="Glyburide 5mg/Metformin 500mg" oninput="updateLabel()">
         </div>
 
         <div class="special-group">
-            <label style="display:block; margin-bottom:10px; font-weight:bold; color:#d32f2f;">5-7. 特殊標注區 (若無警語請留白，標籤會自動隱藏該區塊)</label>
+            <label style="display:block; margin-bottom:10px; font-weight:bold; color:#d32f2f;">5-7. 特殊標注區 (若無警語請留白)</label>
             <div class="input-group">
-                <label>5. 特殊標注 1 (紅色方塊，建議1個字)</label>
+                <label>5. 特殊標注 1 (高警訊藥品請標註“警”)</label>
                 <input type="text" id="in-warn1" value="糖" oninput="updateLabel()">
             </div>
             <div class="input-group">
-                <label>6. 特殊標注 2 (紅色方塊，建議1個字)</label>
+                <label>6. 特殊標注 2 (“糖”“化”“管”)</label>
                 <input type="text" id="in-warn2" value="警" oninput="updateLabel()">
             </div>
             <div class="input-group">
-                <label>7. 特殊標注 3 (灰色直條，建議短語)</label>
+                <label>7. 特殊標注 3</label>
                 <input type="text" id="in-warn3" value="藥名相似 - 複方" oninput="updateLabel()">
             </div>
         </div>
@@ -272,20 +269,16 @@
     </div>
 
     <script>
-        // 即時更新標籤畫面的邏輯
         function updateLabel() {
-            // 更新一般文字
             document.getElementById('out-code').innerText = document.getElementById('in-code').value;
             document.getElementById('out-trade').innerText = document.getElementById('in-trade').value;
             document.getElementById('out-chinese').innerText = document.getElementById('in-chinese').value;
             document.getElementById('out-generic').innerText = document.getElementById('in-generic').value;
 
-            // 取得警語欄位的值
             const w1 = document.getElementById('in-warn1').value.trim();
             const w2 = document.getElementById('in-warn2').value.trim();
             const w3 = document.getElementById('in-warn3').value.trim();
 
-            // 更新警語文字並控制顯示/隱藏 (若沒有輸入字，該區塊就消失)
             const outW1 = document.getElementById('out-warn1');
             outW1.innerText = w1;
             outW1.style.display = w1 ? 'block' : 'none';
@@ -298,7 +291,6 @@
             outW3.innerText = w3;
             outW3.style.display = w3 ? 'block' : 'none';
 
-            // 如果三個特殊標注都是空的，就整個隱藏右側警示區，讓標籤看起來像一般藥品
             const sidebar = document.getElementById('sidebar-container');
             if (!w1 && !w2 && !w3) {
                 sidebar.style.display = 'none';
@@ -307,12 +299,10 @@
             }
         }
 
-        // 頁面載入時先執行一次，確保初始畫面正確
         window.onload = function() {
             updateLabel();
         };
 
-        // 生成並下載 PDF 的邏輯
         function generatePDF() {
             const element = document.getElementById('label-canvas');
             const fileName = document.getElementById('in-code').value || 'label';
@@ -322,7 +312,6 @@
                 filename: `${fileName}_標籤.pdf`,
                 image: { type: 'jpeg', quality: 1.0 },
                 html2canvas: { scale: 3, useCORS: true }, 
-                // 設定為 100x55 mm 的標籤尺寸
                 jsPDF: { unit: 'mm', format: [100, 55], orientation: 'landscape' }
             };
 
