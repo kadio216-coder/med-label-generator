@@ -79,12 +79,13 @@
         .warn-1 {
             background-color: #c92a2a;
             color: white;
-            font-size: 32px;
+            font-size: 42px; /* ★ 放大字體 ★ */
             font-weight: bold;
             width: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 1; /* ★ 限制行高，確保不會撐破外框 ★ */
         }
 
         .content-body {
@@ -138,7 +139,7 @@
         .warn-2 {
             background-color: #c92a2a;
             color: white;
-            font-size: 32px;
+            font-size: 42px; /* ★ 放大字體 ★ */
             font-weight: bold;
             width: 60px;
             height: 60px; 
@@ -146,6 +147,7 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
+            line-height: 1; /* ★ 限制行高，確保不會撐破外框 ★ */
         }
 
         .warn-3 {
@@ -165,7 +167,7 @@
             margin-top: 0px; 
         }
 
-        /* --- 完整還原：下方控制面板樣式 --- */
+        /* --- 下方控制面板樣式 --- */
         .control-section {
             background: white;
             padding: 30px;
@@ -188,7 +190,6 @@
             font-size: 16px;
         }
 
-        /* ★ 這裡把失去的 font-size 和 padding 加回來了 ★ */
         .input-group input, .input-group select {
             padding: 12px;
             font-size: 16px;
