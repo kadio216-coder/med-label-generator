@@ -23,7 +23,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 40px; /* 與下方輸入區的間距 */
+            margin-bottom: 40px;
         }
 
         .control-section {
@@ -43,29 +43,41 @@
             text-align: center;
         }
 
-        /* --- 標籤預覽區樣式 (精準還原圖片) --- */
+        /* --- 標籤預覽區樣式 --- */
         #label-canvas {
-            /* 模擬標籤實際比例，加入白色背景 */
             width: 600px;
             height: 320px;
             background-color: white;
             box-sizing: border-box;
             display: flex;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* 網頁預覽時的陰影，轉PDF時不會有影響 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 5px; /* ★ 最外圍的 5px 白邊 ★ */
         }
 
+        /* 左側主資訊區 */
         .main-content {
             flex: 1;
-            padding: 0 0 0 20px;
             display: flex;
             flex-direction: column;
+            /* ★ 上方與右方 padding 設為 0，讓「糖」能完美貼齊右上角 ★ */
+            padding: 0 0 0 15px; 
+            transition: background-color 0.3s; 
         }
 
-        /* 第一列：代碼與頂部橫線 */
+        /* 底色選項 */
+        .bg-white { background-color: #ffffff; }
+        .bg-yellow { background-color: #fde68a; } 
+        .bg-pink { background-color: #fbcfe8; }   
+
+        /* 第一列：代碼與標注1 */
         .row-1 {
             display: flex;
-            align-items: flex-end;
-            padding-top: 20px;
+            justify-content: space-between;
+            align-items: flex-end; /* 讓內容靠底對齊灰線 */
+            border-bottom: 2px solid #a3a3a3;
+            height: 60px; /* ★ 強制鎖定高度，避免字體撐破版面 ★ */
+            padding-bottom: 0px; 
+            margin-bottom: 5px;
         }
 
         .med-code {
@@ -73,76 +85,86 @@
             color: white;
             font-size: 32px;
             font-weight: 900;
-            padding: 4px 12px;
+            padding: 6px 12px;
             letter-spacing: 1px;
+            margin-bottom: 2px; /* 微調讓黑底不要壓到灰線 */
         }
 
-        .line-top {
-            flex-grow: 1;
-            border-bottom: 2px solid #b3b3b3;
-            margin-bottom: 3px;
+        .warn-1 {
+            background-color: #c92a2a;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            width: 60px;
+            height: 60px; /* ★ 與右邊的「警」完全一樣大 ★ */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            margin: 0; 
         }
 
         /* 第二列：英文商品名 */
         .row-2 {
             text-align: center;
-            padding: 5px 20px 10px 0;
-            border-bottom: 2px solid #b3b3b3;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-bottom: 2px solid #a3a3a3;
+            padding: 10px 0;
+            margin-bottom: 10px;
         }
 
         .trade-name {
-            font-size: 84px; /* 稍微縮小以適應較長藥名 */
+            font-size: 88px;
             font-weight: 900;
             line-height: 1;
             letter-spacing: -1px;
+            color: #000;
         }
 
         /* 第三列：中文與成分名 */
         .row-3 {
             text-align: center;
-            padding: 15px 20px 15px 0;
-            border-bottom: 2px solid #b3b3b3;
-            margin-bottom: 15px;
+            padding-bottom: 10px;
         }
 
         .chinese-name {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 900;
             margin-bottom: 5px;
         }
 
         .generic-name {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 900;
         }
 
-        /* 右側警示區 (特殊標注) */
+        /* 右側警示區 (標注2 與 標注3) */
         .sidebar {
-            width: 55px;
+            width: 60px;
             display: flex;
             flex-direction: column;
-            margin-left: 10px;
-            padding-right: 20px;
-            padding-top: 20px;
-            padding-bottom: 15px;
+            margin-left: 5px; /* ★ 恢復中間的 5px 留白 ★ */
         }
 
-        .warning-box {
+        .warn-2 {
+            background-color: #c92a2a;
             color: white;
-            text-align: center;
+            font-size: 32px;
             font-weight: bold;
-            font-size: 24px;
-            padding: 8px 0;
-            margin-bottom: 4px;
+            width: 60px;
+            height: 60px; /* ★ 與左邊的「糖」完全一樣大 ★ */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0px; /* ★ 恢復與下方灰色區塊無縫接軌 ★ */
+            box-sizing: border-box;
         }
-        .warning-box.red { background-color: #c92a2a; }
 
-        .warning-vertical {
-            background-color: #d1d1d1;
+        .warn-3 {
+            background-color: #bfbfbf;
             color: black;
             font-weight: bold;
             font-size: 22px;
@@ -151,11 +173,15 @@
             writing-mode: vertical-rl;
             text-orientation: upright;
             flex: 1;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
+            /* ★ 確保文字直排時絕對不會跑版變成兩行 ★ */
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
         }
 
-
-        /* --- 控制面板樣式 (下方區塊) --- */
+        /* --- 控制面板樣式 --- */
         .input-group {
             display: flex;
             flex-direction: column;
@@ -168,14 +194,13 @@
             color: #333;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
 
-        /* 特殊標注使用不同底色區隔 */
         .special-group {
             background-color: #f9f9f9;
             padding: 15px;
@@ -209,10 +234,10 @@
         <div class="section-title">✨ 即時標籤預覽區 ✨</div>
         <div id="label-canvas">
             
-            <div class="main-content">
+            <div class="main-content bg-yellow" id="main-content-box">
                 <div class="row-1">
                     <div class="med-code" id="out-code">GLU020</div>
-                    <div class="line-top"></div>
+                    <div class="warn-1" id="out-warn1">糖</div>
                 </div>
                 <div class="row-2">
                     <div class="trade-name" id="out-trade">Glucomet</div>
@@ -224,9 +249,8 @@
             </div>
 
             <div class="sidebar" id="sidebar-container">
-                <div class="warning-box red" id="out-warn1">糖</div>
-                <div class="warning-box red" id="out-warn2">警</div>
-                <div class="warning-vertical" id="out-warn3">藥名相似 - 複方</div>
+                <div class="warn-2" id="out-warn2">警</div>
+                <div class="warn-3" id="out-warn3">藥名相似 - 複方</div>
             </div>
 
         </div>
@@ -255,64 +279,69 @@
         <div class="special-group">
             <label style="display:block; margin-bottom:10px; font-weight:bold; color:#d32f2f;">5-7. 特殊標注區 (若無警語請留白)</label>
             <div class="input-group">
-                <label>5. 特殊標注 1 (紅色方塊，例如：“糖”)</label>
+                <label>5. 特殊標注 1 (主畫面右上角，例如：“糖”)</label>
                 <input type="text" id="in-warn1" value="糖" oninput="updateLabel()">
             </div>
             <div class="input-group">
-                <label>6. 特殊標注 2 (紅色方塊，高警訊藥品請標註“警”)</label>
+                <label>6. 特殊標注 2 (側邊欄上方，高警訊藥品請標註“警”)</label>
                 <input type="text" id="in-warn2" value="警" oninput="updateLabel()">
             </div>
             <div class="input-group">
-                <label>7. 特殊標注 3 (灰色直條，垂直排列文字)</label>
+                <label>7. 特殊標注 3 (側邊欄下方灰色區塊)</label>
                 <input type="text" id="in-warn3" value="藥名相似 - 複方" oninput="updateLabel()">
             </div>
+        </div>
+
+        <div class="input-group" style="background-color: #e6f7ff; padding: 15px; border-radius: 6px;">
+            <label style="color: #0050b3;">8. 藥品標籤底色</label>
+            <select id="in-color" onchange="updateLabel()">
+                <option value="bg-white">白色 (預設)</option>
+                <option value="bg-yellow" selected>黃色</option>
+                <option value="bg-pink">粉紅色</option>
+            </select>
         </div>
 
         <button class="btn-download" onclick="generatePDF()">📥 產生 PDF 標籤檔</button>
     </div>
 
     <script>
-        // 即時更新標籤畫面的邏輯
         function updateLabel() {
-            // 更新一般文字
             document.getElementById('out-code').innerText = document.getElementById('in-code').value;
             document.getElementById('out-trade').innerText = document.getElementById('in-trade').value;
             document.getElementById('out-chinese').innerText = document.getElementById('in-chinese').value;
             document.getElementById('out-generic').innerText = document.getElementById('in-generic').value;
 
-            // 取得警語欄位的值
+            const colorClass = document.getElementById('in-color').value;
+            document.getElementById('main-content-box').className = 'main-content ' + colorClass;
+
             const w1 = document.getElementById('in-warn1').value.trim();
             const w2 = document.getElementById('in-warn2').value.trim();
             const w3 = document.getElementById('in-warn3').value.trim();
 
-            // 更新警語文字並控制顯示/隱藏 (若沒有輸入字，該區塊就消失)
             const outW1 = document.getElementById('out-warn1');
             outW1.innerText = w1;
-            outW1.style.display = w1 ? 'block' : 'none';
+            outW1.style.display = w1 ? 'flex' : 'none';
 
             const outW2 = document.getElementById('out-warn2');
             outW2.innerText = w2;
-            outW2.style.display = w2 ? 'block' : 'none';
+            outW2.style.display = w2 ? 'flex' : 'none';
 
             const outW3 = document.getElementById('out-warn3');
             outW3.innerText = w3;
-            outW3.style.display = w3 ? 'block' : 'none';
+            outW3.style.display = w3 ? 'flex' : 'none';
 
-            // 如果三個特殊標注都是空的，就整個隱藏右側警示區，讓標籤看起來像一般藥品
             const sidebar = document.getElementById('sidebar-container');
-            if (!w1 && !w2 && !w3) {
+            if (!w2 && !w3) {
                 sidebar.style.display = 'none';
             } else {
                 sidebar.style.display = 'flex';
             }
         }
 
-        // 頁面載入時先執行一次，確保初始畫面正確
         window.onload = function() {
             updateLabel();
         };
 
-        // 生成並下載 PDF 的邏輯
         function generatePDF() {
             const element = document.getElementById('label-canvas');
             const fileName = document.getElementById('in-code').value || 'label';
@@ -322,11 +351,9 @@
                 filename: `${fileName}_標籤.pdf`,
                 image: { type: 'jpeg', quality: 1.0 },
                 html2canvas: { scale: 3, useCORS: true }, 
-                // jsPDF 設定：單位為 mm，尺寸為 100x55 mm 的標籤紙大小，橫向 (landscape)
                 jsPDF: { unit: 'mm', format: [100, 55], orientation: 'landscape' }
             };
 
-            // 執行匯出
             html2pdf().set(opt).from(element).save();
         }
     </script>
