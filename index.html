@@ -16,6 +16,7 @@
             align-items: center;
         }
 
+        /* --- 上方預覽區佈局 --- */
         .preview-section {
             width: 100%;
             max-width: 800px;
@@ -23,6 +24,14 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: #555;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
         #label-canvas {
@@ -53,7 +62,7 @@
             justify-content: space-between;
             align-items: stretch;
             height: 60px;
-            border-bottom: 2px solid #a3a3a3; /* 關鍵灰線 1 */
+            border-bottom: 2px solid #a3a3a3;
             box-sizing: border-box;
         }
 
@@ -91,7 +100,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 2px solid #a3a3a3; /* 關鍵灰線 2 */
+            border-bottom: 2px solid #a3a3a3;
             padding: 10px 15px;
         }
 
@@ -126,14 +135,13 @@
             margin-left: 5px; 
         }
 
-        /* ★ 核心修正：側邊紅框高度必須與 row-1 加上 border 的高度總和一致 ★ */
         .warn-2 {
             background-color: #c92a2a;
             color: white;
             font-size: 32px;
             font-weight: bold;
             width: 60px;
-            height: 60px; /* 這裡維持 60px，對應 row-1 的 height */
+            height: 60px; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -154,22 +162,73 @@
             white-space: nowrap;
             display: flex;
             align-items: center;
-            /* ★ 確保灰色區塊「踩在」灰線延長線上 ★ */
             margin-top: 0px; 
         }
 
-        /* 控制介面 */
-        .control-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
-        .input-group { display: flex; flex-direction: column; margin-bottom: 15px; }
-        .input-group label { font-weight: bold; margin-bottom: 5px; }
-        .input-group input, .input-group select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        .special-group { background-color: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px dashed #ccc; margin-bottom: 20px; }
-        .btn-download { width: 100%; padding: 15px; font-size: 18px; font-weight: bold; color: white; background-color: #2b78e4; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        /* --- 完整還原：下方控制面板樣式 --- */
+        .control-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
+        }
+
+        /* ★ 這裡把失去的 font-size 和 padding 加回來了 ★ */
+        .input-group input, .input-group select {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .special-group {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed #ccc;
+            margin-bottom: 25px;
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #2b78e4;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-download:hover {
+            background-color: #1a5bb8;
+        }
     </style>
 </head>
 <body>
 
     <div class="preview-section">
+        <div class="section-title">✨ 即時標籤預覽區 ✨</div>
         <div id="label-canvas">
             <div class="main-content bg-yellow" id="main-content-box">
                 <div class="row-1">
@@ -195,23 +254,28 @@
     </div>
 
     <div class="control-section">
+        <div class="section-title">📝 標籤資料輸入</div>
         <div class="input-group"><label>1. 藥品代碼</label><input type="text" id="in-code" value="GLU020" oninput="updateLabel()"></div>
         <div class="input-group"><label>2. 藥品商品名 (英文)</label><input type="text" id="in-trade" value="Glucomet" oninput="updateLabel()"></div>
         <div class="input-group"><label>3. 藥品商品名 (中文)</label><input type="text" id="in-chinese" value="克糖美錠" oninput="updateLabel()"></div>
         <div class="input-group"><label>4. 藥品成分名與劑量</label><input type="text" id="in-generic" value="Glyburide 5mg/Metformin 500mg" oninput="updateLabel()"></div>
+        
         <div class="special-group">
+            <label style="display:block; margin-bottom:15px; font-weight:bold; color:#d32f2f;">5-7. 特殊標注區 (若無警語請留白)</label>
             <div class="input-group"><label>5. 特殊標注 1</label><input type="text" id="in-warn1" value="糖" oninput="updateLabel()"></div>
             <div class="input-group"><label>6. 特殊標注 2</label><input type="text" id="in-warn2" value="警" oninput="updateLabel()"></div>
             <div class="input-group"><label>7. 特殊標注 3</label><input type="text" id="in-warn3" value="藥名相似 - 複方" oninput="updateLabel()"></div>
         </div>
-        <div class="input-group">
-            <label>8. 藥品標籤底色</label>
+        
+        <div class="input-group" style="background-color: #e6f7ff; padding: 15px; border-radius: 6px; border: 1px solid #91d5ff;">
+            <label style="color: #0050b3;">8. 藥品標籤底色</label>
             <select id="in-color" onchange="updateLabel()">
                 <option value="bg-white">白色</option>
                 <option value="bg-yellow" selected>黃色</option>
                 <option value="bg-pink">粉紅色</option>
             </select>
         </div>
+        
         <button class="btn-download" onclick="generatePDF()">📥 產生 PDF 標籤檔</button>
     </div>
 
@@ -238,7 +302,8 @@
         window.onload = updateLabel;
         function generatePDF() {
             const element = document.getElementById('label-canvas');
-            const opt = { margin: 0, filename: '藥品標籤.pdf', image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 3 }, jsPDF: { unit: 'mm', format: [100, 55], orientation: 'landscape' } };
+            const fileName = document.getElementById('in-code').value || 'label';
+            const opt = { margin: 0, filename: `${fileName}_標籤.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 3, useCORS: true }, jsPDF: { unit: 'mm', format: [100, 55], orientation: 'landscape' } };
             html2pdf().set(opt).from(element).save();
         }
     </script>
