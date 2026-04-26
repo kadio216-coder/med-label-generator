@@ -47,13 +47,13 @@
         .bg-yellow { background-color: #fde68a; } 
         .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列：黑色塊與 Warn1 貼頂對齊，底部灰線橫貫 */
+        /* 第一列 */
         .row-1 {
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             height: 60px;
-            border-bottom: 2px solid #a3a3a3;
+            border-bottom: 2px solid #a3a3a3; /* 第一條灰線 */
             box-sizing: border-box;
         }
 
@@ -81,7 +81,6 @@
             height: 100%;
         }
 
-        /* 內容主體：移除左右 Padding 以便讓分隔線能切齊左右邊緣 */
         .content-body {
             flex: 1;
             display: flex;
@@ -89,15 +88,15 @@
             padding: 0; 
         }
 
-        /* 第二列：灰線必須完全切齊左右邊緣 */
+        /* 第二列 */
         .row-2 {
             text-align: center;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 2px solid #a3a3a3; /* 這條線現在會橫貫整個寬度 */
-            padding: 10px 15px; /* 在內部加 Padding，不影響邊框線條 */
+            border-bottom: 2px solid #a3a3a3; /* 第二條灰線 */
+            padding: 10px 15px;
         }
 
         .trade-name {
@@ -138,10 +137,11 @@
             font-size: 32px;
             font-weight: bold;
             width: 60px;
-            height: 60px;
+            height: 60px; /* 與第一列高度相同 */
             display: flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
         }
 
         .warn-3 {
@@ -158,6 +158,9 @@
             white-space: nowrap;
             display: flex;
             align-items: center;
+            /* ★ 關鍵：設定頂部邊框，使其對齊第一列底部的灰線 ★ */
+            border-top: 2px solid #a3a3a3; 
+            box-sizing: border-box;
         }
 
         /* 控制介面 */
