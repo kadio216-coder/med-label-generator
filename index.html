@@ -158,18 +158,19 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px 0;
+            padding: 5px 0; /* ★ 縮小上下留白，把空間讓給放大的文字 ★ */
             box-sizing: border-box;
             margin-top: 0px; 
+            overflow: hidden; /* ★ 防止文字過大撐破外框 ★ */
         }
 
         .warn-vertical-text {
             color: black;
             font-weight: bold;
-            font-size: 22px;
+            font-size: 36px; /* ★ 從 22px 一口氣放大到 36px ★ */
             writing-mode: vertical-rl;
             text-orientation: upright;
-            letter-spacing: 2px;
+            letter-spacing: 0px; /* ★ 移除字距以容納極限大小的字體 ★ */
             white-space: nowrap;
         }
 
@@ -177,7 +178,7 @@
             width: 24px;
             height: 2px;
             background-color: #777;
-            margin: 12px 0;
+            margin: 8px 0; /* ★ 稍微縮小分隔線留白 ★ */
             display: none; 
         }
 
@@ -221,14 +222,13 @@
             margin-bottom: 25px;
         }
 
-        /* ★ 新增：子輸入框的排版 ★ */
         .sub-input-group {
             display: flex;
-            gap: 10px; /* 三個輸入框之間的間距 */
+            gap: 10px; 
         }
 
         .sub-input-group input {
-            flex: 1; /* 讓三個輸入框平分寬度 */
+            flex: 1; 
         }
 
         .btn-download {
@@ -297,7 +297,7 @@
             <div class="input-group"><label>6. 特殊標注 2</label><input type="text" id="in-warn2" value="警" oninput="updateLabel()"></div>
             
             <div class="input-group">
-                <label>7. 特殊標注 3 (直排，最多可填三組，自動分隔)</label>
+                <label>7. 特殊標注 3 (最多可填三組，自動分隔)</label>
                 <div class="sub-input-group">
                     <input type="text" id="in-warn3-1" value="藥名相似" placeholder="詞句一" oninput="updateLabel()">
                     <input type="text" id="in-warn3-2" value="複方" placeholder="詞句二" oninput="updateLabel()">
@@ -360,15 +360,13 @@
             outW3_3.style.display = w3_3 ? 'block' : 'none';
             
             // 智慧控制分隔線顯示
-            // divider-1 (在詞句 1 和 2 之間，或者 1 和 3 之間)
             const div1 = document.getElementById('warn-divider-1');
             div1.style.display = (w3_1 && (w3_2 || w3_3)) ? 'block' : 'none';
             
-            // divider-2 (在詞句 2 和 3 之間)
             const div2 = document.getElementById('warn-divider-2');
             div2.style.display = (w3_2 && w3_3) ? 'block' : 'none';
             
-            // 控制灰色容器顯示 (只要 1, 2, 3 其中一個有字，就要顯示灰色底)
+            // 控制灰色容器顯示
             const verticalContainer = document.getElementById('vertical-container');
             verticalContainer.style.display = (w3_1 || w3_2 || w3_3) ? 'flex' : 'none';
 
