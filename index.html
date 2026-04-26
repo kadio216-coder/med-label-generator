@@ -47,13 +47,13 @@
         .bg-yellow { background-color: #fde68a; } 
         .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列：強制高度並設定底部灰線 */
+        /* 第一列：黑色塊與 Warn1 貼頂對齊，底部灰線橫貫 */
         .row-1 {
             display: flex;
             justify-content: space-between;
-            align-items: stretch; /* 讓子元素撐滿高度 */
+            align-items: stretch;
             height: 60px;
-            border-bottom: 2px solid #a3a3a3; /* 灰線直接畫在這一列底部 */
+            border-bottom: 2px solid #a3a3a3;
             box-sizing: border-box;
         }
 
@@ -65,8 +65,8 @@
             padding: 0 15px;
             letter-spacing: 1px;
             display: flex;
-            align-items: center; /* 文字垂直置中 */
-            height: 100%; /* 撐滿 60px 高度，自然貼齊底部灰線 */
+            align-items: center;
+            height: 100%;
         }
 
         .warn-1 {
@@ -81,22 +81,23 @@
             height: 100%;
         }
 
+        /* 內容主體：移除左右 Padding 以便讓分隔線能切齊左右邊緣 */
         .content-body {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding-left: 15px; 
-            padding-right: 15px;
+            padding: 0; 
         }
 
+        /* 第二列：灰線必須完全切齊左右邊緣 */
         .row-2 {
             text-align: center;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 2px solid #a3a3a3;
-            padding: 10px 0;
+            border-bottom: 2px solid #a3a3a3; /* 這條線現在會橫貫整個寬度 */
+            padding: 10px 15px; /* 在內部加 Padding，不影響邊框線條 */
         }
 
         .trade-name {
@@ -106,9 +107,10 @@
             letter-spacing: -1px;
         }
 
+        /* 第三列 */
         .row-3 {
             text-align: center;
-            padding: 10px 0;
+            padding: 10px 15px;
         }
 
         .chinese-name {
@@ -122,6 +124,7 @@
             font-weight: 900;
         }
 
+        /* 側邊欄 */
         .sidebar {
             width: 60px;
             display: flex;
@@ -139,7 +142,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-sizing: border-box;
         }
 
         .warn-3 {
@@ -158,7 +160,7 @@
             align-items: center;
         }
 
-        /* 介面樣式 */
+        /* 控制介面 */
         .control-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
         .input-group { display: flex; flex-direction: column; margin-bottom: 15px; }
         .input-group label { font-weight: bold; margin-bottom: 5px; }
