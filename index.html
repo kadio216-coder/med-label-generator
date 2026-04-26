@@ -59,7 +59,8 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 10px 15px 0 15px; 
+            /* ★ 將上方與右方的 padding 設為 0，讓紅色方塊能完全貼齊邊緣 ★ */
+            padding: 0 0 0 15px; 
             transition: background-color 0.3s; 
         }
 
@@ -85,10 +86,11 @@
             font-weight: 900;
             padding: 6px 12px;
             letter-spacing: 1px;
-            margin-bottom: 2px; /* 微調讓黑色方塊不要壓到灰線 */
+            margin-bottom: 2px; 
+            /* ★ 因為外層取消了上方 padding，這裡加上 margin 讓黑底字稍微往下推 ★ */
+            margin-top: 15px; 
         }
 
-        /* ★ 統一設定紅色警示方塊 1 ★ */
         .warn-1 {
             background-color: #c92a2a;
             color: white;
@@ -100,6 +102,8 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
+            /* 確保四周沒有額外的邊距影響對齊 */
+            margin: 0; 
         }
 
         /* 第二列：英文商品名 */
@@ -147,18 +151,17 @@
             margin-left: 5px; 
         }
 
-        /* ★ 統一設定紅色警示方塊 2 ★ */
         .warn-2 {
             background-color: #c92a2a;
             color: white;
             font-size: 32px;
             font-weight: bold;
             width: 60px;
-            height: 60px; /* 固定高度，與 warn-1 相同 */
+            height: 60px; /* 固定高度，與 warn-1 完全相同 */
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 0px; /* ★ 取消與下方的留白 ★ */
+            margin-bottom: 0px; 
             box-sizing: border-box;
         }
 
