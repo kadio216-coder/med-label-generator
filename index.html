@@ -16,7 +16,6 @@
             align-items: center;
         }
 
-        /* --- 上方預覽區佈局 --- */
         .preview-section {
             width: 100%;
             max-width: 800px;
@@ -34,6 +33,7 @@
             text-align: center;
         }
 
+        /* ★ 加入 overflow: hidden 鎖定整體畫布尺寸，確保縮放計算精準 ★ */
         #label-canvas {
             width: 600px;
             height: 320px;
@@ -42,13 +42,16 @@
             display: flex;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             padding: 5px; 
+            overflow: hidden; 
         }
 
+        /* ★ 加入 min-width: 0 避免 Flexbox 被超長文字撐破 ★ */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             padding: 0; 
+            min-width: 0; 
             transition: background-color 0.3s; 
         }
 
@@ -56,7 +59,6 @@
         .bg-yellow { background-color: #fde68a; } 
         .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列：高度固定 60px 並畫出底線 */
         .row-1 {
             display: flex;
             justify-content: space-between;
@@ -69,23 +71,28 @@
         .med-code {
             background-color: black;
             color: white;
-            font-size: 32px;
             font-weight: 900;
             padding: 0 15px;
             display: flex;
             align-items: center;
+            /* 防止換行，強制單行顯示以觸發縮放 */
+            white-space: nowrap; 
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .warn-1 {
             background-color: #c92a2a;
             color: white;
-            font-size: 42px;
             font-weight: bold;
             width: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             line-height: 1; 
+            white-space: nowrap; 
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .content-body {
@@ -93,6 +100,7 @@
             display: flex;
             flex-direction: column;
             padding: 0; 
+            min-width: 0;
         }
 
         .row-2 {
@@ -103,32 +111,42 @@
             justify-content: center;
             border-bottom: 2px solid #a3a3a3;
             padding: 10px 15px;
+            min-width: 0;
         }
 
         .trade-name {
-            font-size: 88px;
             font-weight: 900;
             line-height: 1;
             letter-spacing: -1px;
+            white-space: nowrap; 
+            overflow: hidden;
+            width: 100%;
         }
 
         .row-3 {
             text-align: center;
             padding: 10px 15px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .chinese-name {
-            font-size: 30px;
             font-weight: 900;
             margin-bottom: 5px;
+            white-space: nowrap; 
+            overflow: hidden;
+            width: 100%;
         }
 
         .generic-name {
-            font-size: 24px;
             font-weight: 900;
+            white-space: nowrap; 
+            overflow: hidden;
+            width: 100%;
         }
 
-        /* 側邊欄 */
         .sidebar {
             width: 60px;
             display: flex;
@@ -139,7 +157,6 @@
         .warn-2 {
             background-color: #c92a2a;
             color: white;
-            font-size: 42px; 
             font-weight: bold;
             width: 60px;
             height: 60px; 
@@ -148,9 +165,10 @@
             justify-content: center;
             box-sizing: border-box;
             line-height: 1; 
+            white-space: nowrap; 
+            overflow: hidden;
         }
 
-        /* 垂直文字容器 */
         .warn-vertical-container {
             background-color: #bfbfbf;
             flex: 1;
@@ -158,19 +176,18 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 5px 0; /* ★ 縮小上下留白，把空間讓給放大的文字 ★ */
+            padding: 5px 0; 
             box-sizing: border-box;
             margin-top: 0px; 
-            overflow: hidden; /* ★ 防止文字過大撐破外框 ★ */
+            overflow: hidden; 
         }
 
         .warn-vertical-text {
             color: black;
             font-weight: bold;
-            font-size: 36px; /* ★ 從 22px 一口氣放大到 36px ★ */
             writing-mode: vertical-rl;
             text-orientation: upright;
-            letter-spacing: 0px; /* ★ 移除字距以容納極限大小的字體 ★ */
+            letter-spacing: 0px; 
             white-space: nowrap;
         }
 
@@ -178,8 +195,9 @@
             width: 24px;
             height: 2px;
             background-color: #777;
-            margin: 8px 0; /* ★ 稍微縮小分隔線留白 ★ */
+            margin: 6px 0; /* 稍微縮小間距以容納更多字 */
             display: none; 
+            flex-shrink: 0; /* 防止線條被壓縮 */
         }
 
         /* --- 下方控制面板樣式 --- */
@@ -297,7 +315,7 @@
             <div class="input-group"><label>6. 特殊標注 2</label><input type="text" id="in-warn2" value="警" oninput="updateLabel()"></div>
             
             <div class="input-group">
-                <label>7. 特殊標注 3 (最多可填三組，自動分隔)</label>
+                <label>7. 特殊標注 3 (最多可填三組，自動縮放對齊)</label>
                 <div class="sub-input-group">
                     <input type="text" id="in-warn3-1" value="藥名相似" placeholder="詞句一" oninput="updateLabel()">
                     <input type="text" id="in-warn3-2" value="複方" placeholder="詞句二" oninput="updateLabel()">
@@ -319,8 +337,41 @@
     </div>
 
     <script>
+        // ★ 核心功能：水平文字自動縮放引擎 ★
+        function fitHorizontalText(elementId, maxFontSize) {
+            const el = document.getElementById(elementId);
+            if (!el || el.style.display === 'none') return;
+            
+            let size = maxFontSize;
+            el.style.fontSize = size + 'px'; // 每次輸入先重置回最大字體
+            
+            // 當文字寬度超過容器寬度時，不斷縮小字體 (最低縮小到 10px 保證可讀性)
+            while (el.scrollWidth > el.clientWidth && size > 10) {
+                size--;
+                el.style.fontSize = size + 'px';
+            }
+        }
+
+        // ★ 核心功能：垂直文字自動縮放引擎 ★
+        function fitVerticalText() {
+            const container = document.getElementById('vertical-container');
+            if (container.style.display === 'none') return;
+
+            const texts = container.getElementsByClassName('warn-vertical-text');
+            let size = 36; // 垂直文字最大預設字體 36px
+            
+            // 每次輸入先重置回最大字體
+            for (let t of texts) { t.style.fontSize = size + 'px'; }
+
+            // 當內容總高度超過灰色外框高度時，同步縮小所有直排字體
+            while (container.scrollHeight > container.clientHeight && size > 12) {
+                size--;
+                for (let t of texts) { t.style.fontSize = size + 'px'; }
+            }
+        }
+
         function updateLabel() {
-            // 基本資訊
+            // 基本資訊寫入
             document.getElementById('out-code').innerText = document.getElementById('in-code').value;
             document.getElementById('out-trade').innerText = document.getElementById('in-trade').value;
             document.getElementById('out-chinese').innerText = document.getElementById('in-chinese').value;
@@ -330,14 +381,13 @@
             const colorClass = document.getElementById('in-color').value;
             document.getElementById('main-content-box').className = 'main-content ' + colorClass;
             
-            // 讀取警語數值
+            // 讀取並寫入警語數值
             const w1 = document.getElementById('in-warn1').value.trim();
             const w2 = document.getElementById('in-warn2').value.trim();
             const w3_1 = document.getElementById('in-warn3-1').value.trim();
             const w3_2 = document.getElementById('in-warn3-2').value.trim();
             const w3_3 = document.getElementById('in-warn3-3').value.trim();
             
-            // 更新紅色框 1 & 2
             const outW1 = document.getElementById('out-warn1');
             outW1.innerText = w1; 
             outW1.style.display = w1 ? 'flex' : 'none';
@@ -346,7 +396,6 @@
             outW2.innerText = w2; 
             outW2.style.display = w2 ? 'flex' : 'none';
             
-            // 更新垂直文字
             const outW3_1 = document.getElementById('out-warn3-1');
             outW3_1.innerText = w3_1;
             outW3_1.style.display = w3_1 ? 'block' : 'none';
@@ -366,13 +415,23 @@
             const div2 = document.getElementById('warn-divider-2');
             div2.style.display = (w3_2 && w3_3) ? 'block' : 'none';
             
-            // 控制灰色容器顯示
+            // 控制側邊欄與灰色容器顯示
             const verticalContainer = document.getElementById('vertical-container');
             verticalContainer.style.display = (w3_1 || w3_2 || w3_3) ? 'flex' : 'none';
 
-            // 控制整個右側邊欄顯示
             const sidebar = document.getElementById('sidebar-container');
             sidebar.style.display = (!w2 && !w3_1 && !w3_2 && !w3_3) ? 'none' : 'flex';
+
+            // ★ 執行自動縮放引擎 (依序給定每個欄位的最大極限字體) ★
+            fitHorizontalText('out-code', 32);
+            fitHorizontalText('out-trade', 88);
+            fitHorizontalText('out-chinese', 30);
+            fitHorizontalText('out-generic', 24);
+            fitHorizontalText('out-warn1', 42);
+            fitHorizontalText('out-warn2', 42);
+            
+            // 執行垂直文字縮放
+            fitVerticalText();
         }
         
         window.onload = updateLabel;
