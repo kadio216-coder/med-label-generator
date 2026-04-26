@@ -178,7 +178,16 @@
             box-sizing: border-box;
             margin-top: 0px; 
             overflow: hidden; 
-            gap: 10px; /* 控制文字與線條的安全距離 */
+            gap: 8px; /* 安全間距 */
+        }
+
+        /* ★ 全新的防護罩機制，徹底解決直排文字重疊 Bug ★ */
+        .warn-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0; /* 絕對不允許被擠壓，保證取得真實高度 */
         }
 
         .warn-vertical-text {
@@ -188,8 +197,9 @@
             text-orientation: upright;
             letter-spacing: 0px; 
             white-space: nowrap;
-            /* ★ 核心救星：絕對禁止網頁自動擠壓文字 ★ */
-            flex-shrink: 0; 
+            line-height: 1; /* 強制行高 1，避免文字上下溢出 */
+            margin: 0;
+            padding: 0;
         }
 
         .warn-divider {
@@ -197,8 +207,8 @@
             height: 2px;
             background-color: #555;
             display: none; 
-            /* ★ 核心救星：絕對禁止網頁自動擠壓線條 ★ */
             flex-shrink: 0; 
+            margin: 0;
         }
 
         /* --- 下方控制面板樣式 --- */
@@ -293,11 +303,19 @@
             <div class="sidebar" id="sidebar-container">
                 <div class="warn-2" id="out-warn2">警</div>
                 <div class="warn-vertical-container" id="vertical-container">
-                    <div class="warn-vertical-text" id="out-warn3-1">藥名相似</div>
+                    <div class="warn-text-wrapper" id="wrap-3-1">
+                        <div class="warn-vertical-text" id="out-warn3-1">藥名相似</div>
+                    </div>
                     <div class="warn-divider" id="warn-divider-1"></div>
-                    <div class="warn-vertical-text" id="out-warn3-2">複方</div>
+                    
+                    <div class="warn-text-wrapper" id="wrap-3-2">
+                        <div class="warn-vertical-text" id="out-warn3-2">複方</div>
+                    </div>
                     <div class="warn-divider" id="warn-divider-2"></div>
-                    <div class="warn-vertical-text" id="out-warn3-3"></div>
+                    
+                    <div class="warn-text-wrapper" id="wrap-3-3">
+                        <div class="warn-vertical-text" id="out-warn3-3">高警訊</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -338,7 +356,6 @@
     </div>
 
     <script>
-        // 水平文字自動縮放引擎
         function fitHorizontalText(elementId, maxFontSize) {
             const el = document.getElementById(elementId);
             if (!el || el.style.display === 'none') return;
@@ -352,18 +369,18 @@
             }
         }
 
-        // 垂直文字自動縮放引擎
+        // 升級版垂直文字自動縮放引擎
         function fitVerticalText() {
             const container = document.getElementById('vertical-container');
             if (container.style.display === 'none') return;
 
             const texts = container.getElementsByClassName('warn-vertical-text');
-            let size = 36; // 從最大 36px 開始測試
+            let size = 36; // 最大字體
             
             // 先全部還原到最大字體
             for (let t of texts) { t.style.fontSize = size + 'px'; }
 
-            // 當內容加上 Gap 超過容器的實際高度時，就開始等比縮小
+            // 精準抓取高度：因為加了防護罩，scrollHeight 的計算將 100% 準確
             while (container.scrollHeight > container.clientHeight && size > 10) {
                 size--;
                 for (let t of texts) { t.style.fontSize = size + 'px'; }
@@ -393,18 +410,17 @@
             outW2.innerText = w2; 
             outW2.style.display = w2 ? 'flex' : 'none';
             
-            const outW3_1 = document.getElementById('out-warn3-1');
-            outW3_1.innerText = w3_1;
-            outW3_1.style.display = w3_1 ? 'block' : 'none';
+            // 寫入文字
+            document.getElementById('out-warn3-1').innerText = w3_1;
+            document.getElementById('out-warn3-2').innerText = w3_2;
+            document.getElementById('out-warn3-3').innerText = w3_3;
             
-            const outW3_2 = document.getElementById('out-warn3-2');
-            outW3_2.innerText = w3_2;
-            outW3_2.style.display = w3_2 ? 'block' : 'none';
-
-            const outW3_3 = document.getElementById('out-warn3-3');
-            outW3_3.innerText = w3_3;
-            outW3_3.style.display = w3_3 ? 'block' : 'none';
+            // 控制防護罩的顯示與隱藏
+            document.getElementById('wrap-3-1').style.display = w3_1 ? 'flex' : 'none';
+            document.getElementById('wrap-3-2').style.display = w3_2 ? 'flex' : 'none';
+            document.getElementById('wrap-3-3').style.display = w3_3 ? 'flex' : 'none';
             
+            // 控制分隔線顯示
             const div1 = document.getElementById('warn-divider-1');
             div1.style.display = (w3_1 && (w3_2 || w3_3)) ? 'block' : 'none';
             
@@ -417,6 +433,7 @@
             const sidebar = document.getElementById('sidebar-container');
             sidebar.style.display = (!w2 && !w3_1 && !w3_2 && !w3_3) ? 'none' : 'flex';
 
+            // 執行縮放計算
             fitHorizontalText('out-code', 32);
             fitHorizontalText('out-trade', 88);
             fitHorizontalText('out-chinese', 30);
