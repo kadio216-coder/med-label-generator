@@ -51,7 +51,7 @@
             box-sizing: border-box;
             display: flex;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            padding: 5px; /* 最外框留白寬度：5px */
+            padding: 5px; 
         }
 
         /* 左側主資訊區 */
@@ -92,7 +92,10 @@
             color: white;
             font-size: 26px;
             font-weight: bold;
-            padding: 6px 12px;
+            width: 60px; /* 強制寬度與側邊欄相同 */
+            text-align: center;
+            padding: 10px 0; /* 統一留白尺寸 */
+            box-sizing: border-box;
         }
 
         /* 第二列：英文商品名 */
@@ -137,7 +140,7 @@
             width: 60px;
             display: flex;
             flex-direction: column;
-            margin-left: 5px; /* ★ 已將這裡的留白從 10px 改為 5px，與最外框一致 ★ */
+            margin-left: 5px; 
         }
 
         .warn-2 {
@@ -146,8 +149,10 @@
             text-align: center;
             font-weight: bold;
             font-size: 26px;
-            padding: 10px 0;
-            margin-bottom: 5px;
+            width: 60px; /* 強制寬度與側邊欄相同 */
+            padding: 10px 0; /* 統一留白尺寸 */
+            margin-bottom: 0; /* 取消與下方灰色區塊的留白 */
+            box-sizing: border-box;
         }
 
         .warn-3 {
