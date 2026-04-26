@@ -85,16 +85,20 @@
             font-weight: 900;
             padding: 6px 12px;
             letter-spacing: 1px;
+            margin-bottom: 2px; /* 微調讓黑色方塊不要壓到灰線 */
         }
 
+        /* ★ 統一設定紅色警示方塊 1 ★ */
         .warn-1 {
             background-color: #c92a2a;
             color: white;
-            font-size: 26px;
+            font-size: 32px;
             font-weight: bold;
-            width: 60px; /* 強制寬度與側邊欄相同 */
-            text-align: center;
-            padding: 10px 0; /* 統一留白尺寸 */
+            width: 60px;
+            height: 60px; /* 固定高度 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-sizing: border-box;
         }
 
@@ -143,15 +147,18 @@
             margin-left: 5px; 
         }
 
+        /* ★ 統一設定紅色警示方塊 2 ★ */
         .warn-2 {
             background-color: #c92a2a;
             color: white;
-            text-align: center;
+            font-size: 32px;
             font-weight: bold;
-            font-size: 26px;
-            width: 60px; /* 強制寬度與側邊欄相同 */
-            padding: 10px 0; /* 統一留白尺寸 */
-            margin-bottom: 0; /* 取消與下方灰色區塊的留白 */
+            width: 60px;
+            height: 60px; /* 固定高度，與 warn-1 相同 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0px; /* ★ 取消與下方的留白 ★ */
             box-sizing: border-box;
         }
 
@@ -307,11 +314,11 @@
 
             const outW1 = document.getElementById('out-warn1');
             outW1.innerText = w1;
-            outW1.style.display = w1 ? 'block' : 'none';
+            outW1.style.display = w1 ? 'flex' : 'none';
 
             const outW2 = document.getElementById('out-warn2');
             outW2.innerText = w2;
-            outW2.style.display = w2 ? 'block' : 'none';
+            outW2.style.display = w2 ? 'flex' : 'none';
 
             const outW3 = document.getElementById('out-warn3');
             outW3.innerText = w3;
