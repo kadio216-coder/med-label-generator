@@ -51,7 +51,6 @@
             box-sizing: border-box;
             display: flex;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            /* 讓整體標籤有邊界感 */
             padding: 5px; 
         }
 
@@ -60,22 +59,22 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 10px 15px;
-            transition: background-color 0.3s; /* 切換顏色時有漸變效果 */
+            padding: 10px 15px 0 15px; /* 微調主區塊 padding */
+            transition: background-color 0.3s; 
         }
 
-        /* 底色選項的 CSS 類別 */
+        /* 底色選項 */
         .bg-white { background-color: #ffffff; }
-        .bg-yellow { background-color: #fde68a; } /* 柔和的黃色 */
-        .bg-pink { background-color: #fbcfe8; }   /* 柔和的粉紅色 */
+        .bg-yellow { background-color: #fde68a; } 
+        .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列：代碼與標注1 */
+        /* 第一列：代碼與標注1 (已修正貼齊底線) */
         .row-1 {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: flex-end; /* 讓內容靠底對齊 */
             border-bottom: 2px solid #a3a3a3;
-            padding-bottom: 5px;
+            padding-bottom: 0px; /* 底部留白歸零，完美貼齊灰線 */
             margin-bottom: 5px;
         }
 
@@ -84,7 +83,7 @@
             color: white;
             font-size: 32px;
             font-weight: 900;
-            padding: 4px 12px;
+            padding: 6px 12px;
             letter-spacing: 1px;
         }
 
@@ -93,7 +92,7 @@
             color: white;
             font-size: 26px;
             font-weight: bold;
-            padding: 4px 12px;
+            padding: 6px 12px;
         }
 
         /* 第二列：英文商品名 */
@@ -289,27 +288,22 @@
 
     <script>
         function updateLabel() {
-            // 更新一般文字
             document.getElementById('out-code').innerText = document.getElementById('in-code').value;
             document.getElementById('out-trade').innerText = document.getElementById('in-trade').value;
             document.getElementById('out-chinese').innerText = document.getElementById('in-chinese').value;
             document.getElementById('out-generic').innerText = document.getElementById('in-generic').value;
 
-            // 更新背景顏色
             const colorClass = document.getElementById('in-color').value;
             document.getElementById('main-content-box').className = 'main-content ' + colorClass;
 
-            // 取得警語欄位的值
             const w1 = document.getElementById('in-warn1').value.trim();
             const w2 = document.getElementById('in-warn2').value.trim();
             const w3 = document.getElementById('in-warn3').value.trim();
 
-            // 更新 標注1 (糖) - 在主畫面內
             const outW1 = document.getElementById('out-warn1');
             outW1.innerText = w1;
             outW1.style.display = w1 ? 'block' : 'none';
 
-            // 更新 標注2 (警) 與 標注3 (藥名相似) - 在側邊欄
             const outW2 = document.getElementById('out-warn2');
             outW2.innerText = w2;
             outW2.style.display = w2 ? 'block' : 'none';
@@ -318,10 +312,9 @@
             outW3.innerText = w3;
             outW3.style.display = w3 ? 'block' : 'none';
 
-            // 判斷右側邊欄是否需要整個隱藏
             const sidebar = document.getElementById('sidebar-container');
             if (!w2 && !w3) {
-                sidebar.style.display = 'none'; // 如果 2 和 3 都沒有字，隱藏右側欄
+                sidebar.style.display = 'none';
             } else {
                 sidebar.style.display = 'flex';
             }
