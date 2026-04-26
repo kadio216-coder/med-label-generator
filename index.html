@@ -16,7 +16,6 @@
             align-items: center;
         }
 
-        /* --- 佈局容器 --- */
         .preview-section {
             width: 100%;
             max-width: 800px;
@@ -35,15 +34,6 @@
             max-width: 600px;
         }
 
-        .section-title {
-            color: #555;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        /* --- 標籤預覽區樣式 --- */
         #label-canvas {
             width: 600px;
             height: 320px;
@@ -51,33 +41,30 @@
             box-sizing: border-box;
             display: flex;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            padding: 5px; /* ★ 最外圍的 5px 白邊 ★ */
+            padding: 5px; 
         }
 
-        /* 左側主資訊區 */
+        /* --- 主資訊區：移除 Padding 讓黑色塊頂格 --- */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            /* ★ 上方與右方 padding 設為 0，讓「糖」能完美貼齊右上角 ★ */
-            padding: 0 0 0 15px; 
+            padding: 0; /* 關鍵：完全移除，由內部元素自訂間距 */
             transition: background-color 0.3s; 
         }
 
-        /* 底色選項 */
         .bg-white { background-color: #ffffff; }
         .bg-yellow { background-color: #fde68a; } 
         .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列：代碼與標注1 */
+        /* 第一列：強制貼頂、貼左 */
         .row-1 {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end; /* 讓內容靠底對齊灰線 */
-            border-bottom: 2px solid #a3a3a3;
-            height: 60px; /* ★ 強制鎖定高度，避免字體撐破版面 ★ */
-            padding-bottom: 0px; 
+            align-items: flex-start; /* 改成貼頂對齊 */
+            height: 60px;
             margin-bottom: 5px;
+            /* 灰線只在內容區，黑色代碼塊下方不要有線 */
         }
 
         .med-code {
@@ -85,9 +72,10 @@
             color: white;
             font-size: 32px;
             font-weight: 900;
-            padding: 6px 12px;
+            padding: 6px 15px;
             letter-spacing: 1px;
-            margin-bottom: 2px; /* 微調讓黑底不要壓到灰線 */
+            line-height: 1.2;
+            display: inline-block;
         }
 
         .warn-1 {
@@ -96,24 +84,31 @@
             font-size: 32px;
             font-weight: bold;
             width: 60px;
-            height: 60px; /* ★ 與右邊的「警」完全一樣大 ★ */
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-sizing: border-box;
-            margin: 0; 
         }
 
-        /* 第二列：英文商品名 */
+        /* 下方內容區：增加左邊距以對齊黑色塊後的空間 */
+        .content-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-left: 15px; /* 這裡補回左邊距，讓文字對齊黑色塊邊緣 */
+            padding-right: 15px;
+        }
+
         .row-2 {
             text-align: center;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-top: 2px solid #a3a3a3; /* 線條移到這 */
             border-bottom: 2px solid #a3a3a3;
+            margin-top: -5px; /* 抵銷 margin 讓線貼近黑色塊 */
             padding: 10px 0;
-            margin-bottom: 10px;
         }
 
         .trade-name {
@@ -121,13 +116,11 @@
             font-weight: 900;
             line-height: 1;
             letter-spacing: -1px;
-            color: #000;
         }
 
-        /* 第三列：中文與成分名 */
         .row-3 {
             text-align: center;
-            padding-bottom: 10px;
+            padding: 10px 0;
         }
 
         .chinese-name {
@@ -141,12 +134,12 @@
             font-weight: 900;
         }
 
-        /* 右側警示區 (標注2 與 標注3) */
+        /* 右側側邊欄 */
         .sidebar {
             width: 60px;
             display: flex;
             flex-direction: column;
-            margin-left: 5px; /* ★ 恢復中間的 5px 留白 ★ */
+            margin-left: 5px; 
         }
 
         .warn-2 {
@@ -155,11 +148,10 @@
             font-size: 32px;
             font-weight: bold;
             width: 60px;
-            height: 60px; /* ★ 與左邊的「糖」完全一樣大 ★ */
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 0px; /* ★ 恢復與下方灰色區塊無縫接軌 ★ */
             box-sizing: border-box;
         }
 
@@ -174,77 +166,36 @@
             text-orientation: upright;
             flex: 1;
             letter-spacing: 2px;
-            /* ★ 確保文字直排時絕對不會跑版變成兩行 ★ */
             white-space: nowrap;
-            overflow: hidden;
             display: flex;
             align-items: center;
         }
 
-        /* --- 控制面板樣式 --- */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .input-group input, .input-group select {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .special-group {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px dashed #ccc;
-            margin-bottom: 20px;
-        }
-
-        .btn-download {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            background-color: #2b78e4;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 10px;
-        }
-
-        .btn-download:hover {
-            background-color: #1a5bb8;
-        }
+        /* 輸入介面樣式 */
+        .input-group { display: flex; flex-direction: column; margin-bottom: 15px; }
+        .input-group label { font-weight: bold; margin-bottom: 5px; }
+        .input-group input, .input-group select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        .special-group { background-color: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px dashed #ccc; margin-bottom: 20px; }
+        .btn-download { width: 100%; padding: 15px; font-size: 18px; font-weight: bold; color: white; background-color: #2b78e4; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="preview-section">
-        <div class="section-title">✨ 即時標籤預覽區 ✨</div>
         <div id="label-canvas">
-            
             <div class="main-content bg-yellow" id="main-content-box">
                 <div class="row-1">
                     <div class="med-code" id="out-code">GLU020</div>
                     <div class="warn-1" id="out-warn1">糖</div>
                 </div>
-                <div class="row-2">
-                    <div class="trade-name" id="out-trade">Glucomet</div>
-                </div>
-                <div class="row-3">
-                    <div class="chinese-name" id="out-chinese">克糖美錠</div>
-                    <div class="generic-name" id="out-generic">Glyburide 5mg/Metformin 500mg</div>
+                <div class="content-body">
+                    <div class="row-2">
+                        <div class="trade-name" id="out-trade">Glucomet</div>
+                    </div>
+                    <div class="row-3">
+                        <div class="chinese-name" id="out-chinese">克糖美錠</div>
+                        <div class="generic-name" id="out-generic">Glyburide 5mg/Metformin 500mg</div>
+                    </div>
                 </div>
             </div>
 
@@ -252,55 +203,27 @@
                 <div class="warn-2" id="out-warn2">警</div>
                 <div class="warn-3" id="out-warn3">藥名相似 - 複方</div>
             </div>
-
         </div>
     </div>
 
     <div class="control-section">
-        <div class="section-title">📝 標籤資料輸入</div>
-        
-        <div class="input-group">
-            <label>1. 藥品代碼</label>
-            <input type="text" id="in-code" value="GLU020" oninput="updateLabel()">
-        </div>
-        <div class="input-group">
-            <label>2. 藥品商品名 (英文)</label>
-            <input type="text" id="in-trade" value="Glucomet" oninput="updateLabel()">
-        </div>
-        <div class="input-group">
-            <label>3. 藥品商品名 (中文)</label>
-            <input type="text" id="in-chinese" value="克糖美錠" oninput="updateLabel()">
-        </div>
-        <div class="input-group">
-            <label>4. 藥品成分名與劑量</label>
-            <input type="text" id="in-generic" value="Glyburide 5mg/Metformin 500mg" oninput="updateLabel()">
-        </div>
-
+        <div class="input-group"><label>1. 藥品代碼</label><input type="text" id="in-code" value="GLU020" oninput="updateLabel()"></div>
+        <div class="input-group"><label>2. 藥品商品名 (英文)</label><input type="text" id="in-trade" value="Glucomet" oninput="updateLabel()"></div>
+        <div class="input-group"><label>3. 藥品商品名 (中文)</label><input type="text" id="in-chinese" value="克糖美錠" oninput="updateLabel()"></div>
+        <div class="input-group"><label>4. 藥品成分名與劑量</label><input type="text" id="in-generic" value="Glyburide 5mg/Metformin 500mg" oninput="updateLabel()"></div>
         <div class="special-group">
-            <label style="display:block; margin-bottom:10px; font-weight:bold; color:#d32f2f;">5-7. 特殊標注區 (若無警語請留白)</label>
-            <div class="input-group">
-                <label>5. 特殊標注 1 (主畫面右上角，例如：“糖”)</label>
-                <input type="text" id="in-warn1" value="糖" oninput="updateLabel()">
-            </div>
-            <div class="input-group">
-                <label>6. 特殊標注 2 (側邊欄上方，高警訊藥品請標註“警”)</label>
-                <input type="text" id="in-warn2" value="警" oninput="updateLabel()">
-            </div>
-            <div class="input-group">
-                <label>7. 特殊標注 3 (側邊欄下方灰色區塊)</label>
-                <input type="text" id="in-warn3" value="藥名相似 - 複方" oninput="updateLabel()">
-            </div>
+            <div class="input-group"><label>5. 特殊標注 1</label><input type="text" id="in-warn1" value="糖" oninput="updateLabel()"></div>
+            <div class="input-group"><label>6. 特殊標注 2</label><input type="text" id="in-warn2" value="警" oninput="updateLabel()"></div>
+            <div class="input-group"><label>7. 特殊標注 3</label><input type="text" id="in-warn3" value="藥名相似 - 複方" oninput="updateLabel()"></div>
         </div>
-
-        <div class="input-group" style="background-color: #e6f7ff; padding: 15px; border-radius: 6px;">
-            <label style="color: #0050b3;">8. 藥品標籤底色</label>
+        <div class="input-group">
+            <label>8. 藥品標籤底色</label>
             <select id="in-color" onchange="updateLabel()">
-                <option value="bg-white">白色 (預設)</option>
+                <option value="bg-white">白色</option>
                 <option value="bg-yellow" selected>黃色</option>
                 <option value="bg-pink">粉紅色</option>
             </select>
         </div>
-
         <button class="btn-download" onclick="generatePDF()">📥 產生 PDF 標籤檔</button>
     </div>
 
@@ -310,50 +233,24 @@
             document.getElementById('out-trade').innerText = document.getElementById('in-trade').value;
             document.getElementById('out-chinese').innerText = document.getElementById('in-chinese').value;
             document.getElementById('out-generic').innerText = document.getElementById('in-generic').value;
-
             const colorClass = document.getElementById('in-color').value;
             document.getElementById('main-content-box').className = 'main-content ' + colorClass;
-
             const w1 = document.getElementById('in-warn1').value.trim();
             const w2 = document.getElementById('in-warn2').value.trim();
             const w3 = document.getElementById('in-warn3').value.trim();
-
             const outW1 = document.getElementById('out-warn1');
-            outW1.innerText = w1;
-            outW1.style.display = w1 ? 'flex' : 'none';
-
+            outW1.innerText = w1; outW1.style.display = w1 ? 'flex' : 'none';
             const outW2 = document.getElementById('out-warn2');
-            outW2.innerText = w2;
-            outW2.style.display = w2 ? 'flex' : 'none';
-
+            outW2.innerText = w2; outW2.style.display = w2 ? 'flex' : 'none';
             const outW3 = document.getElementById('out-warn3');
-            outW3.innerText = w3;
-            outW3.style.display = w3 ? 'flex' : 'none';
-
+            outW3.innerText = w3; outW3.style.display = w3 ? 'flex' : 'none';
             const sidebar = document.getElementById('sidebar-container');
-            if (!w2 && !w3) {
-                sidebar.style.display = 'none';
-            } else {
-                sidebar.style.display = 'flex';
-            }
+            sidebar.style.display = (!w2 && !w3) ? 'none' : 'flex';
         }
-
-        window.onload = function() {
-            updateLabel();
-        };
-
+        window.onload = updateLabel;
         function generatePDF() {
             const element = document.getElementById('label-canvas');
-            const fileName = document.getElementById('in-code').value || 'label';
-
-            const opt = {
-                margin: 0,
-                filename: `${fileName}_標籤.pdf`,
-                image: { type: 'jpeg', quality: 1.0 },
-                html2canvas: { scale: 3, useCORS: true }, 
-                jsPDF: { unit: 'mm', format: [100, 55], orientation: 'landscape' }
-            };
-
+            const opt = { margin: 0, filename: '藥品標籤.pdf', image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 3 }, jsPDF: { unit: 'mm', format: [100, 55], orientation: 'landscape' } };
             html2pdf().set(opt).from(element).save();
         }
     </script>
