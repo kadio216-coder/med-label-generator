@@ -33,7 +33,6 @@
             text-align: center;
         }
 
-        /* ★ 加入 overflow: hidden 鎖定整體畫布尺寸，確保縮放計算精準 ★ */
         #label-canvas {
             width: 600px;
             height: 320px;
@@ -45,7 +44,6 @@
             overflow: hidden; 
         }
 
-        /* ★ 加入 min-width: 0 避免 Flexbox 被超長文字撐破 ★ */
         .main-content {
             flex: 1;
             display: flex;
@@ -75,7 +73,6 @@
             padding: 0 15px;
             display: flex;
             align-items: center;
-            /* 防止換行，強制單行顯示以觸發縮放 */
             white-space: nowrap; 
             overflow: hidden;
             box-sizing: border-box;
@@ -169,6 +166,7 @@
             overflow: hidden;
         }
 
+        /* ★ 修正灰色區塊：強制保留呼吸空間 (Gap) ★ */
         .warn-vertical-container {
             background-color: #bfbfbf;
             flex: 1;
@@ -176,10 +174,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 5px 0; 
+            padding: 15px 0; /* 保留上下 15px 的絕對空間 */
             box-sizing: border-box;
             margin-top: 0px; 
             overflow: hidden; 
+            gap: 12px; /* ★ 強制文字與線條之間維持 12px 的安全距離 ★ */
         }
 
         .warn-vertical-text {
@@ -187,17 +186,17 @@
             font-weight: bold;
             writing-mode: vertical-rl;
             text-orientation: upright;
-            letter-spacing: 0px; 
+            letter-spacing: 2px; /* 恢復字距讓文字好閱讀 */
             white-space: nowrap;
         }
 
         .warn-divider {
-            width: 24px;
+            width: 26px;
             height: 2px;
-            background-color: #777;
-            margin: 6px 0; /* 稍微縮小間距以容納更多字 */
+            background-color: #666;
+            flex-shrink: 0;
             display: none; 
-            flex-shrink: 0; /* 防止線條被壓縮 */
+            /* 取消 margin，改由父層的 gap 統一管理間距 */
         }
 
         /* --- 下方控制面板樣式 --- */
@@ -337,33 +336,31 @@
     </div>
 
     <script>
-        // ★ 核心功能：水平文字自動縮放引擎 ★
+        // 水平文字自動縮放引擎
         function fitHorizontalText(elementId, maxFontSize) {
             const el = document.getElementById(elementId);
             if (!el || el.style.display === 'none') return;
             
             let size = maxFontSize;
-            el.style.fontSize = size + 'px'; // 每次輸入先重置回最大字體
+            el.style.fontSize = size + 'px'; 
             
-            // 當文字寬度超過容器寬度時，不斷縮小字體 (最低縮小到 10px 保證可讀性)
             while (el.scrollWidth > el.clientWidth && size > 10) {
                 size--;
                 el.style.fontSize = size + 'px';
             }
         }
 
-        // ★ 核心功能：垂直文字自動縮放引擎 ★
+        // 垂直文字自動縮放引擎
         function fitVerticalText() {
             const container = document.getElementById('vertical-container');
             if (container.style.display === 'none') return;
 
             const texts = container.getElementsByClassName('warn-vertical-text');
-            let size = 36; // 垂直文字最大預設字體 36px
+            let size = 32; // 最高設定為 32px，避免單字過於巨大
             
-            // 每次輸入先重置回最大字體
             for (let t of texts) { t.style.fontSize = size + 'px'; }
 
-            // 當內容總高度超過灰色外框高度時，同步縮小所有直排字體
+            // 當內容加上強制 Gap 超過容器高度時，開始平滑縮小
             while (container.scrollHeight > container.clientHeight && size > 12) {
                 size--;
                 for (let t of texts) { t.style.fontSize = size + 'px'; }
@@ -371,17 +368,14 @@
         }
 
         function updateLabel() {
-            // 基本資訊寫入
             document.getElementById('out-code').innerText = document.getElementById('in-code').value;
             document.getElementById('out-trade').innerText = document.getElementById('in-trade').value;
             document.getElementById('out-chinese').innerText = document.getElementById('in-chinese').value;
             document.getElementById('out-generic').innerText = document.getElementById('in-generic').value;
             
-            // 標籤底色
             const colorClass = document.getElementById('in-color').value;
             document.getElementById('main-content-box').className = 'main-content ' + colorClass;
             
-            // 讀取並寫入警語數值
             const w1 = document.getElementById('in-warn1').value.trim();
             const w2 = document.getElementById('in-warn2').value.trim();
             const w3_1 = document.getElementById('in-warn3-1').value.trim();
@@ -408,21 +402,18 @@
             outW3_3.innerText = w3_3;
             outW3_3.style.display = w3_3 ? 'block' : 'none';
             
-            // 智慧控制分隔線顯示
             const div1 = document.getElementById('warn-divider-1');
             div1.style.display = (w3_1 && (w3_2 || w3_3)) ? 'block' : 'none';
             
             const div2 = document.getElementById('warn-divider-2');
             div2.style.display = (w3_2 && w3_3) ? 'block' : 'none';
             
-            // 控制側邊欄與灰色容器顯示
             const verticalContainer = document.getElementById('vertical-container');
             verticalContainer.style.display = (w3_1 || w3_2 || w3_3) ? 'flex' : 'none';
 
             const sidebar = document.getElementById('sidebar-container');
             sidebar.style.display = (!w2 && !w3_1 && !w3_2 && !w3_3) ? 'none' : 'flex';
 
-            // ★ 執行自動縮放引擎 (依序給定每個欄位的最大極限字體) ★
             fitHorizontalText('out-code', 32);
             fitHorizontalText('out-trade', 88);
             fitHorizontalText('out-chinese', 30);
@@ -430,7 +421,6 @@
             fitHorizontalText('out-warn1', 42);
             fitHorizontalText('out-warn2', 42);
             
-            // 執行垂直文字縮放
             fitVerticalText();
         }
         
