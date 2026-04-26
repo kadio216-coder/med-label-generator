@@ -51,20 +51,32 @@
             box-sizing: border-box;
             display: flex;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            /* 讓整體標籤有邊界感 */
+            padding: 5px; 
         }
 
+        /* 左側主資訊區 */
         .main-content {
             flex: 1;
-            padding: 0 0 0 20px;
             display: flex;
             flex-direction: column;
+            padding: 10px 15px;
+            transition: background-color 0.3s; /* 切換顏色時有漸變效果 */
         }
 
-        /* 第一列：代碼與頂部橫線 */
+        /* 底色選項的 CSS 類別 */
+        .bg-white { background-color: #ffffff; }
+        .bg-yellow { background-color: #fde68a; } /* 柔和的黃色 */
+        .bg-pink { background-color: #fbcfe8; }   /* 柔和的粉紅色 */
+
+        /* 第一列：代碼與標注1 */
         .row-1 {
             display: flex;
-            align-items: flex-end;
-            padding-top: 20px;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #a3a3a3;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
         }
 
         .med-code {
@@ -76,72 +88,71 @@
             letter-spacing: 1px;
         }
 
-        .line-top {
-            flex-grow: 1;
-            border-bottom: 2px solid #b3b3b3;
-            margin-bottom: 3px;
+        .warn-1 {
+            background-color: #c92a2a;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            padding: 4px 12px;
         }
 
         /* 第二列：英文商品名 */
         .row-2 {
             text-align: center;
-            padding: 5px 20px 10px 0;
-            border-bottom: 2px solid #b3b3b3;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-bottom: 2px solid #a3a3a3;
+            padding: 10px 0;
+            margin-bottom: 10px;
         }
 
         .trade-name {
-            font-size: 84px;
+            font-size: 88px;
             font-weight: 900;
             line-height: 1;
             letter-spacing: -1px;
+            color: #000;
         }
 
         /* 第三列：中文與成分名 */
         .row-3 {
             text-align: center;
-            padding: 15px 20px 15px 0;
-            border-bottom: 2px solid #b3b3b3;
-            margin-bottom: 15px;
+            padding-bottom: 10px;
         }
 
         .chinese-name {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 900;
             margin-bottom: 5px;
         }
 
         .generic-name {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 900;
         }
 
-        /* 右側警示區 (特殊標注) */
+        /* 右側警示區 (標注2 與 標注3) */
         .sidebar {
-            width: 55px;
+            width: 60px;
             display: flex;
             flex-direction: column;
             margin-left: 10px;
-            padding-right: 20px;
-            padding-top: 20px;
-            padding-bottom: 15px;
         }
 
-        .warning-box {
+        .warn-2 {
+            background-color: #c92a2a;
             color: white;
             text-align: center;
             font-weight: bold;
-            font-size: 24px;
-            padding: 8px 0;
-            margin-bottom: 4px;
+            font-size: 26px;
+            padding: 10px 0;
+            margin-bottom: 5px;
         }
-        .warning-box.red { background-color: #c92a2a; }
 
-        .warning-vertical {
-            background-color: #d1d1d1;
+        .warn-3 {
+            background-color: #bfbfbf;
             color: black;
             font-weight: bold;
             font-size: 22px;
@@ -166,7 +177,7 @@
             color: #333;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
@@ -206,10 +217,10 @@
         <div class="section-title">✨ 即時標籤預覽區 ✨</div>
         <div id="label-canvas">
             
-            <div class="main-content">
+            <div class="main-content bg-yellow" id="main-content-box">
                 <div class="row-1">
                     <div class="med-code" id="out-code">GLU020</div>
-                    <div class="line-top"></div>
+                    <div class="warn-1" id="out-warn1">糖</div>
                 </div>
                 <div class="row-2">
                     <div class="trade-name" id="out-trade">Glucomet</div>
@@ -221,9 +232,8 @@
             </div>
 
             <div class="sidebar" id="sidebar-container">
-                <div class="warning-box red" id="out-warn1">糖</div>
-                <div class="warning-box red" id="out-warn2">警</div>
-                <div class="warning-vertical" id="out-warn3">藥名相似 - 複方</div>
+                <div class="warn-2" id="out-warn2">警</div>
+                <div class="warn-3" id="out-warn3">藥名相似 - 複方</div>
             </div>
 
         </div>
@@ -252,17 +262,26 @@
         <div class="special-group">
             <label style="display:block; margin-bottom:10px; font-weight:bold; color:#d32f2f;">5-7. 特殊標注區 (若無警語請留白)</label>
             <div class="input-group">
-                <label>5. 特殊標注 1 (高警訊藥品請標註“警”)</label>
+                <label>5. 特殊標注 1 (主畫面右上角，例如：“糖”)</label>
                 <input type="text" id="in-warn1" value="糖" oninput="updateLabel()">
             </div>
             <div class="input-group">
-                <label>6. 特殊標注 2 (“糖”“化”“管”)</label>
+                <label>6. 特殊標注 2 (側邊欄上方，高警訊藥品請標註“警”)</label>
                 <input type="text" id="in-warn2" value="警" oninput="updateLabel()">
             </div>
             <div class="input-group">
-                <label>7. 特殊標注 3</label>
+                <label>7. 特殊標注 3 (側邊欄下方灰色區塊)</label>
                 <input type="text" id="in-warn3" value="藥名相似 - 複方" oninput="updateLabel()">
             </div>
+        </div>
+
+        <div class="input-group" style="background-color: #e6f7ff; padding: 15px; border-radius: 6px;">
+            <label style="color: #0050b3;">8. 藥品標籤底色</label>
+            <select id="in-color" onchange="updateLabel()">
+                <option value="bg-white">白色 (預設)</option>
+                <option value="bg-yellow" selected>黃色</option>
+                <option value="bg-pink">粉紅色</option>
+            </select>
         </div>
 
         <button class="btn-download" onclick="generatePDF()">📥 產生 PDF 標籤檔</button>
@@ -270,19 +289,27 @@
 
     <script>
         function updateLabel() {
+            // 更新一般文字
             document.getElementById('out-code').innerText = document.getElementById('in-code').value;
             document.getElementById('out-trade').innerText = document.getElementById('in-trade').value;
             document.getElementById('out-chinese').innerText = document.getElementById('in-chinese').value;
             document.getElementById('out-generic').innerText = document.getElementById('in-generic').value;
 
+            // 更新背景顏色
+            const colorClass = document.getElementById('in-color').value;
+            document.getElementById('main-content-box').className = 'main-content ' + colorClass;
+
+            // 取得警語欄位的值
             const w1 = document.getElementById('in-warn1').value.trim();
             const w2 = document.getElementById('in-warn2').value.trim();
             const w3 = document.getElementById('in-warn3').value.trim();
 
+            // 更新 標注1 (糖) - 在主畫面內
             const outW1 = document.getElementById('out-warn1');
             outW1.innerText = w1;
             outW1.style.display = w1 ? 'block' : 'none';
 
+            // 更新 標注2 (警) 與 標注3 (藥名相似) - 在側邊欄
             const outW2 = document.getElementById('out-warn2');
             outW2.innerText = w2;
             outW2.style.display = w2 ? 'block' : 'none';
@@ -291,9 +318,10 @@
             outW3.innerText = w3;
             outW3.style.display = w3 ? 'block' : 'none';
 
+            // 判斷右側邊欄是否需要整個隱藏
             const sidebar = document.getElementById('sidebar-container');
-            if (!w1 && !w2 && !w3) {
-                sidebar.style.display = 'none';
+            if (!w2 && !w3) {
+                sidebar.style.display = 'none'; // 如果 2 和 3 都沒有字，隱藏右側欄
             } else {
                 sidebar.style.display = 'flex';
             }
