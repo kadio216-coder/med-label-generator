@@ -47,7 +47,7 @@
         .bg-yellow { background-color: #fde68a; } 
         .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列 */
+        /* 第一列：黑色塊與 Warn1 */
         .row-1 {
             display: flex;
             justify-content: space-between;
@@ -137,7 +137,7 @@
             font-size: 32px;
             font-weight: bold;
             width: 60px;
-            height: 60px; /* 與第一列高度相同 */
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -158,12 +158,14 @@
             white-space: nowrap;
             display: flex;
             align-items: center;
-            /* ★ 關鍵：設定頂部邊框，使其對齊第一列底部的灰線 ★ */
-            border-top: 2px solid #a3a3a3; 
+            /* ★ 修正：移除 border-top，改用高度對齊 ★ */
+            border-top: none; 
             box-sizing: border-box;
+            /* 透過與 row-1 相同的 border-bottom 高度來達成視覺平行 */
+            margin-top: 2px; 
         }
 
-        /* 控制介面 */
+        /* 控制介面樣式 */
         .control-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
         .input-group { display: flex; flex-direction: column; margin-bottom: 15px; }
         .input-group label { font-weight: bold; margin-bottom: 5px; }
@@ -175,6 +177,7 @@
 <body>
 
     <div class="preview-section">
+        <div class="section-title">✨ 藥品標籤即時預覽 ✨</div>
         <div id="label-canvas">
             <div class="main-content bg-yellow" id="main-content-box">
                 <div class="row-1">
