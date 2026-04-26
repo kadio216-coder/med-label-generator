@@ -25,15 +25,6 @@
             margin-bottom: 40px;
         }
 
-        .control-section {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 600px;
-        }
-
         #label-canvas {
             width: 600px;
             height: 320px;
@@ -44,12 +35,11 @@
             padding: 5px; 
         }
 
-        /* --- 主資訊區：移除 Padding 讓黑色塊頂格 --- */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 0; /* 關鍵：完全移除，由內部元素自訂間距 */
+            padding: 0; 
             transition: background-color 0.3s; 
         }
 
@@ -57,14 +47,14 @@
         .bg-yellow { background-color: #fde68a; } 
         .bg-pink { background-color: #fbcfe8; }   
 
-        /* 第一列：強制貼頂、貼左 */
+        /* 第一列：強制高度並設定底部灰線 */
         .row-1 {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start; /* 改成貼頂對齊 */
+            align-items: stretch; /* 讓子元素撐滿高度 */
             height: 60px;
-            margin-bottom: 5px;
-            /* 灰線只在內容區，黑色代碼塊下方不要有線 */
+            border-bottom: 2px solid #a3a3a3; /* 灰線直接畫在這一列底部 */
+            box-sizing: border-box;
         }
 
         .med-code {
@@ -72,10 +62,11 @@
             color: white;
             font-size: 32px;
             font-weight: 900;
-            padding: 6px 15px;
+            padding: 0 15px;
             letter-spacing: 1px;
-            line-height: 1.2;
-            display: inline-block;
+            display: flex;
+            align-items: center; /* 文字垂直置中 */
+            height: 100%; /* 撐滿 60px 高度，自然貼齊底部灰線 */
         }
 
         .warn-1 {
@@ -84,18 +75,17 @@
             font-size: 32px;
             font-weight: bold;
             width: 60px;
-            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100%;
         }
 
-        /* 下方內容區：增加左邊距以對齊黑色塊後的空間 */
         .content-body {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding-left: 15px; /* 這裡補回左邊距，讓文字對齊黑色塊邊緣 */
+            padding-left: 15px; 
             padding-right: 15px;
         }
 
@@ -105,9 +95,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-top: 2px solid #a3a3a3; /* 線條移到這 */
             border-bottom: 2px solid #a3a3a3;
-            margin-top: -5px; /* 抵銷 margin 讓線貼近黑色塊 */
             padding: 10px 0;
         }
 
@@ -134,7 +122,6 @@
             font-weight: 900;
         }
 
-        /* 右側側邊欄 */
         .sidebar {
             width: 60px;
             display: flex;
@@ -171,7 +158,8 @@
             align-items: center;
         }
 
-        /* 輸入介面樣式 */
+        /* 介面樣式 */
+        .control-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
         .input-group { display: flex; flex-direction: column; margin-bottom: 15px; }
         .input-group label { font-weight: bold; margin-bottom: 5px; }
         .input-group input, .input-group select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
