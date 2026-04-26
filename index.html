@@ -79,13 +79,13 @@
         .warn-1 {
             background-color: #c92a2a;
             color: white;
-            font-size: 42px; /* ★ 放大字體 ★ */
+            font-size: 42px;
             font-weight: bold;
             width: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1; /* ★ 限制行高，確保不會撐破外框 ★ */
+            line-height: 1; 
         }
 
         .content-body {
@@ -139,7 +139,7 @@
         .warn-2 {
             background-color: #c92a2a;
             color: white;
-            font-size: 42px; /* ★ 放大字體 ★ */
+            font-size: 42px; 
             font-weight: bold;
             width: 60px;
             height: 60px; 
@@ -147,24 +147,38 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            line-height: 1; /* ★ 限制行高，確保不會撐破外框 ★ */
+            line-height: 1; 
         }
 
-        .warn-3 {
+        /* ★ 全新的垂直文字容器 ★ */
+        .warn-vertical-container {
             background-color: #bfbfbf;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 0;
+            box-sizing: border-box;
+            margin-top: 0px; 
+        }
+
+        .warn-vertical-text {
             color: black;
             font-weight: bold;
             font-size: 22px;
-            text-align: center;
-            padding: 15px 0;
             writing-mode: vertical-rl;
             text-orientation: upright;
-            flex: 1;
             letter-spacing: 2px;
             white-space: nowrap;
-            display: flex;
-            align-items: center;
-            margin-top: 0px; 
+        }
+
+        .warn-divider {
+            width: 24px;
+            height: 2px;
+            background-color: #777;
+            margin: 12px 0;
+            display: none; /* 預設隱藏，由 JS 控制顯示 */
         }
 
         /* --- 下方控制面板樣式 --- */
@@ -249,7 +263,11 @@
 
             <div class="sidebar" id="sidebar-container">
                 <div class="warn-2" id="out-warn2">警</div>
-                <div class="warn-3" id="out-warn3">藥名相似 - 複方</div>
+                <div class="warn-vertical-container" id="vertical-container">
+                    <div class="warn-vertical-text" id="out-warn3">藥名相似</div>
+                    <div class="warn-divider" id="warn-divider"></div>
+                    <div class="warn-vertical-text" id="out-warn4">複方</div>
+                </div>
             </div>
         </div>
     </div>
@@ -262,14 +280,15 @@
         <div class="input-group"><label>4. 藥品成分名與劑量</label><input type="text" id="in-generic" value="Glyburide 5mg/Metformin 500mg" oninput="updateLabel()"></div>
         
         <div class="special-group">
-            <label style="display:block; margin-bottom:15px; font-weight:bold; color:#d32f2f;">5-7. 特殊標注區 (若無警語請留白)</label>
+            <label style="display:block; margin-bottom:15px; font-weight:bold; color:#d32f2f;">5-8. 特殊標注區 (若無警語請留白)</label>
             <div class="input-group"><label>5. 特殊標注 1</label><input type="text" id="in-warn1" value="糖" oninput="updateLabel()"></div>
             <div class="input-group"><label>6. 特殊標注 2</label><input type="text" id="in-warn2" value="警" oninput="updateLabel()"></div>
-            <div class="input-group"><label>7. 特殊標注 3</label><input type="text" id="in-warn3" value="藥名相似 - 複方" oninput="updateLabel()"></div>
+            <div class="input-group"><label>7. 特殊標注 3 (直排上方)</label><input type="text" id="in-warn3" value="藥名相似" oninput="updateLabel()"></div>
+            <div class="input-group"><label>8. 特殊標注 4 (直排下方)</label><input type="text" id="in-warn4" value="複方" oninput="updateLabel()"></div>
         </div>
         
         <div class="input-group" style="background-color: #e6f7ff; padding: 15px; border-radius: 6px; border: 1px solid #91d5ff;">
-            <label style="color: #0050b3;">8. 藥品標籤底色</label>
+            <label style="color: #0050b3;">9. 藥品標籤底色</label>
             <select id="in-color" onchange="updateLabel()">
                 <option value="bg-white">白色</option>
                 <option value="bg-yellow" selected>黃色</option>
@@ -282,29 +301,65 @@
 
     <script>
         function updateLabel() {
+            // 基本資訊
             document.getElementById('out-code').innerText = document.getElementById('in-code').value;
             document.getElementById('out-trade').innerText = document.getElementById('in-trade').value;
             document.getElementById('out-chinese').innerText = document.getElementById('in-chinese').value;
             document.getElementById('out-generic').innerText = document.getElementById('in-generic').value;
+            
+            // 標籤底色
             const colorClass = document.getElementById('in-color').value;
             document.getElementById('main-content-box').className = 'main-content ' + colorClass;
+            
+            // 讀取警語數值
             const w1 = document.getElementById('in-warn1').value.trim();
             const w2 = document.getElementById('in-warn2').value.trim();
             const w3 = document.getElementById('in-warn3').value.trim();
+            const w4 = document.getElementById('in-warn4').value.trim();
+            
+            // 更新紅色框 1 & 2
             const outW1 = document.getElementById('out-warn1');
-            outW1.innerText = w1; outW1.style.display = w1 ? 'flex' : 'none';
+            outW1.innerText = w1; 
+            outW1.style.display = w1 ? 'flex' : 'none';
+            
             const outW2 = document.getElementById('out-warn2');
-            outW2.innerText = w2; outW2.style.display = w2 ? 'flex' : 'none';
+            outW2.innerText = w2; 
+            outW2.style.display = w2 ? 'flex' : 'none';
+            
+            // 更新垂直文字 3 & 4
             const outW3 = document.getElementById('out-warn3');
-            outW3.innerText = w3; outW3.style.display = w3 ? 'flex' : 'none';
+            outW3.innerText = w3;
+            outW3.style.display = w3 ? 'block' : 'none';
+            
+            const outW4 = document.getElementById('out-warn4');
+            outW4.innerText = w4;
+            outW4.style.display = w4 ? 'block' : 'none';
+            
+            // 控制分隔線顯示 (只有在 3 和 4 都有字的時候才顯示)
+            const divider = document.getElementById('warn-divider');
+            divider.style.display = (w3 && w4) ? 'block' : 'none';
+            
+            // 控制灰色容器顯示 (只要 3 或 4 其中一個有字，就要顯示灰色底)
+            const verticalContainer = document.getElementById('vertical-container');
+            verticalContainer.style.display = (w3 || w4) ? 'flex' : 'none';
+
+            // 控制整個右側邊欄顯示
             const sidebar = document.getElementById('sidebar-container');
-            sidebar.style.display = (!w2 && !w3) ? 'none' : 'flex';
+            sidebar.style.display = (!w2 && !w3 && !w4) ? 'none' : 'flex';
         }
+        
         window.onload = updateLabel;
+        
         function generatePDF() {
             const element = document.getElementById('label-canvas');
             const fileName = document.getElementById('in-code').value || 'label';
-            const opt = { margin: 0, filename: `${fileName}_標籤.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 3, useCORS: true }, jsPDF: { unit: 'mm', format: [100, 55], orientation: 'landscape' } };
+            const opt = { 
+                margin: 0, 
+                filename: `${fileName}_標籤.pdf`, 
+                image: { type: 'jpeg', quality: 1 }, 
+                html2canvas: { scale: 3, useCORS: true }, 
+                jsPDF: { unit: 'mm', format: [100, 55], orientation: 'landscape' } 
+            };
             html2pdf().set(opt).from(element).save();
         }
     </script>
