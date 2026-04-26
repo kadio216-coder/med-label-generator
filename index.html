@@ -164,9 +164,9 @@
             line-height: 1; 
             white-space: nowrap; 
             overflow: hidden;
+            flex-shrink: 0;
         }
 
-        /* ★ 修正灰色區塊：強制保留呼吸空間 (Gap) ★ */
         .warn-vertical-container {
             background-color: #bfbfbf;
             flex: 1;
@@ -174,11 +174,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px 0; /* 保留上下 15px 的絕對空間 */
+            padding: 10px 0; 
             box-sizing: border-box;
             margin-top: 0px; 
             overflow: hidden; 
-            gap: 12px; /* ★ 強制文字與線條之間維持 12px 的安全距離 ★ */
+            gap: 10px; /* 控制文字與線條的安全距離 */
         }
 
         .warn-vertical-text {
@@ -186,17 +186,19 @@
             font-weight: bold;
             writing-mode: vertical-rl;
             text-orientation: upright;
-            letter-spacing: 2px; /* 恢復字距讓文字好閱讀 */
+            letter-spacing: 0px; 
             white-space: nowrap;
+            /* ★ 核心救星：絕對禁止網頁自動擠壓文字 ★ */
+            flex-shrink: 0; 
         }
 
         .warn-divider {
-            width: 26px;
+            width: 24px;
             height: 2px;
-            background-color: #666;
-            flex-shrink: 0;
+            background-color: #555;
             display: none; 
-            /* 取消 margin，改由父層的 gap 統一管理間距 */
+            /* ★ 核心救星：絕對禁止網頁自動擠壓線條 ★ */
+            flex-shrink: 0; 
         }
 
         /* --- 下方控制面板樣式 --- */
@@ -318,7 +320,7 @@
                 <div class="sub-input-group">
                     <input type="text" id="in-warn3-1" value="藥名相似" placeholder="詞句一" oninput="updateLabel()">
                     <input type="text" id="in-warn3-2" value="複方" placeholder="詞句二" oninput="updateLabel()">
-                    <input type="text" id="in-warn3-3" value="" placeholder="詞句三" oninput="updateLabel()">
+                    <input type="text" id="in-warn3-3" value="高警訊" placeholder="詞句三" oninput="updateLabel()">
                 </div>
             </div>
         </div>
@@ -356,12 +358,13 @@
             if (container.style.display === 'none') return;
 
             const texts = container.getElementsByClassName('warn-vertical-text');
-            let size = 32; // 最高設定為 32px，避免單字過於巨大
+            let size = 36; // 從最大 36px 開始測試
             
+            // 先全部還原到最大字體
             for (let t of texts) { t.style.fontSize = size + 'px'; }
 
-            // 當內容加上強制 Gap 超過容器高度時，開始平滑縮小
-            while (container.scrollHeight > container.clientHeight && size > 12) {
+            // 當內容加上 Gap 超過容器的實際高度時，就開始等比縮小
+            while (container.scrollHeight > container.clientHeight && size > 10) {
                 size--;
                 for (let t of texts) { t.style.fontSize = size + 'px'; }
             }
